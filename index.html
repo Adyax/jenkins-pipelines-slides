@@ -36,9 +36,12 @@ class: center, middle
 
 # What is (deployment) pipeline
 
+blablabla
+
+???
 From Martin Fowler: "A deployment pipeline is a way to deal with this by breaking up your build into stages."
 
---
+---
 
 ## Jenkins pipelines
 
@@ -80,6 +83,28 @@ TBA
 
 ---
 
+## Simple pipeline
+
+Pipeline code:
+
+```groovy
+node {
+*    echo 'Hello from Pipeline'
+}
+```
+
+Pipeline result:
+
+```groovy
+Started by user anonymous
+[Pipeline] echo
+Hello from Pipeline
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+---
+
 # Pipeline as a code
 TBA
 
@@ -98,7 +123,9 @@ TBA
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        highlightLines: true    
+      });
     </script>
   </body>
 </html>
