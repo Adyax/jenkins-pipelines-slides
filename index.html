@@ -51,23 +51,44 @@ Pipelines are Jenkins jobs enabled by the Pipeline (formerly called "workflow") 
 
 Pipelines leverage the power of multiple steps to execute both simple and complex tasks according to parameters that you establish. Once created, pipelines can build code and orchestrate the work required to drive applications from commit to delivery.
 
+https://github.com/vfarcic/jenkins-pipeline-docker/blob/master/articles/need-jenkins-pipeline.md
+
 ---
 
 # Why we need pipelines?
+
+Pipeline (formerly known as Workflow) was built with the community’s requirements for a flexible, extensible, and script-based CD pipeline capability for Jenkins in mind. To that end, Pipeline:
+
+- Can support complex, real-world, CD Pipeline requirements: pipelines can fork/join, loop, parallel, to name a few
+- Is Resilient: pipeline executions can survive master restarts
+- Is Pausable: pipelines can pause and wait for human input/approval
+- Is Efficient: pipelines can restart from saved checkpoints
+- Is Visualized: Pipeline StageView provides status at-a-glance dashboards including trending
+
+???
+- It was a lot of plugins and different jobs interconnected and it becomes single script with Pipeline.
+- Pipeline is mostly a glue code.
 
 ---
 
 # Continuous Integration
 
 Continuous Integration (CI) is the practice of merging all developer working copies to a shared mainline several times a day.
-???
-Continuous delivery is sometimes confused with continuous deployment. Continuous deployment means that every change is automatically deployed to production. Continuous delivery means that the team ensures every change can be deployed to production but may choose not to do it, usually due to business reasons. In order to do continuous deployment one must be doing continuous delivery
---
+
+---
 
 # Continuous Delivery
 
 Continuous Delivery (CD) is a software strategy that enables organizations to deliver new features to users as fast and efficiently as possible.
---
+
+## Continuous Delivery & Feature Branches
+
+Every successful build on your Master branch should be releasable. Your feature branches gets merged into master, when they have been tested.
+
+???
+Continuous delivery is sometimes confused with continuous deployment. Continuous deployment means that every change is automatically deployed to production. Continuous delivery means that the team ensures every change can be deployed to production but may choose not to do it, usually due to business reasons. In order to do continuous deployment one must be doing continuous delivery
+
+---
 
 # Continuous Deployment
 
@@ -110,19 +131,86 @@ Finished: SUCCESS
 
 ---
 
+## Pipeline with stages
+
+Pipeline code:
+
+```groovy
+node {
+    stage('init')
+*    echo 'Hello from Pipeline'
+
+    stage('build')
+    ...
+}
+```
+
+Pipeline execution log:
+
+```groovy
+Started by user anonymous
+[Pipeline] echo
+Hello from Pipeline
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+---
+
 # Pipeline as a code
+TBA
+
+---
+
+# Pipeline-as-code with Multibranch Workflows (TBE)
+
+The Workflow Multibranch feature (provided by the workflow plugin) provides the following key abilities:
+
+- Automatic Workflow (job) creation in Jenkins per new branch in the repo (assuming webhooks are registered from GH to Jenkins).
+- Build specific to that child-branch and its unique scm change and build history.
+- Automatic job pruning/deletion for branches deleted from the repository, according to the settings.
+- Flexibility to individually configure branch properties, by overriding the parent properties, if required.
+- Jenkins pipeline-as-code (concept) enables you to maintain your CI/CD workflow logic in the project/application source code repo with no additional configuration to be maintained per branch in Jenkins.
+
+---
+
+# Integration with Gitlab
+
+screen
+
+---
+
+# Job DSL Plugin
+
 TBA
 
 ---
 
 # What we had
 
-## - redundant pointing-and-clicking in Jenkins admin interface
-## - many jobs that do almost same things differently
-## - no common strategy for standard things like emails config, build discarding, etc
-## - lots of deployment technical debt
+- All configuration was UI based
+- redundant pointing-and-clicking in Jenkins admin interface
+- many jobs that do almost same things differently
+- no common strategy for standard things like emails config, build discarding, etc
+- lots of deployment technical debt
 
 ---
+
+# From simple pipeline to even simplier pipeline
+
+- Through moving complex things out of sight
+- Owner of project code see and edit only simpliest part of pipeline - conterolled by Project
+- Complex part of pipeline moved into WorkflowLibs repo (inside of Jenkins) - controlled by Operations team
+
+---
+
+# Use cases
+
+## Use case - 1 (one repo in -> no workflow -> same (target) repo out)
+
+## Use case - 2 (one repo in -> composer workflow -> target repo out)
+
+## Use case - 3 (multiple repos in -> build/composer workflow -> target repo out)
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
