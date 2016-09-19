@@ -23,51 +23,91 @@ class: center, middle
 
 # JENKINS 2 PIPELINES AS A CONTINUOUS INTEGRATION PLATFORM FOR DRUPAL
 
----
+???
 
-# Agenda
+Hello everybody,
 
-1. Introduction
-2. Deep-dive
-3. Use cases
-4. Showtime!
+- My name is Alexander Tolstikov and I want to present our session named JENKINS 2 PIPELINES AS A CONTINUOUS INTEGRATION PLATFORM FOR DRUPAL. The name for this session is not very correct as we are going to show you much more interesting stuff then just Continuous Integration. You'll have some theory first and than we'll show you some real examples of using pipelines.
 
 ---
 
-# What is (deployment) pipeline
+# Software delivery & deployment pipeline (AN)
 
-From Martin Fowler: "A deployment pipeline is a way to deal with this by breaking up your build into stages."
+## Build
+## Deploy
+## Test
+## Release
+
+Deployment pipeline is the automated implementations of these steps.
 
 ???
-blablabla
+- The goal of any software development process is to deliver some product to end users.
+- We want to deliver changes to users in fast, reliable way from development to release.
+- ...
 
 ---
 
-## Jenkins pipelines
+# Software release antipatterns
 
-From Jenkins official site: (TBE)
+## Manual deploys
+You should only choose version number and click deploy.
 
-Pipelines are Jenkins jobs enabled by the Pipeline (formerly called "workflow") plugin and built with simple text scripts that use a Pipeline DSL (domain-specific language) based on the Groovy programming language.
+## Long release cycles
 
-Pipelines leverage the power of multiple steps to execute both simple and complex tasks according to parameters that you establish. Once created, pipelines can build code and orchestrate the work required to drive applications from commit to delivery.
-
-https://github.com/vfarcic/jenkins-pipeline-docker/blob/master/articles/need-jenkins-pipeline.md
+## Manual configuration of environments
 
 ---
 
-# Why we need pipelines?
+# Release process should be
+- frequent
+- automated
+- repeatable
+- lowrisk
+- cheap
+- fast
+- predictable
 
-Pipeline (formerly known as Workflow) was built with the community’s requirements for a flexible, extensible, and script-based CD pipeline capability for Jenkins in mind. To that end, Pipeline:
+---
 
-- Can support complex, real-world, CD Pipeline requirements: pipelines can fork/join, loop, parallel, to name a few
-- Is Resilient: pipeline executions can survive master restarts
-- Is Pausable: pipelines can pause and wait for human input/approval
-- Is Efficient: pipelines can restart from saved checkpoints
-- Is Visualized: Pipeline StageView provides status at-a-glance dashboards including trending
+# Principles of successfull software delivery
+
+--
+
+## Repeatable and reliable process
 
 ???
-- It was a lot of plugins and different jobs interconnected and it becomes single script with Pipeline.
-- Pipeline is mostly a glue code.
+Releasing software should be easy. It should be easy because you have tested every single part of the release process hundreds of times before. It should be as simple as pressing a button. The repeatability and reliability derive from two principles: automate almost everything, and keep everything you need to build, deploy, test, and release your application in version control.
+
+--
+
+## Automate (almost) everything
+
+???
+You don’t need to automate everything at once. You should start by looking at that part of your build, deploy, test, and release process that is currently the bottleneck. You can, and should, automate gradually over time.i
+
+--
+
+## Put everything in version control
+???
+- Code
+- Configuration
+-- Application configuration
+-- Infrastructure configuration
+- Deploy scripts
+- Tests
+- Documentation
+
+--
+
+## If it hurts - do it more frequently
+
+--
+
+## Done means released
+
+--
+
+## Everybody is responsible
 
 ---
 
@@ -80,6 +120,10 @@ Continuous Integration (CI) is the practice of merging all developer working cop
 # Continuous Delivery
 
 Continuous Delivery (CD) is a software strategy that enables organizations to deliver new features to users as fast and efficiently as possible.
+
+_"Continuous Delivery is a software development discipline where you build software in such a way that the software can be released to production at any time"_ - Martin Fowler.
+
+Continuous Delivery aims to reduce the cost, time, and risk of delivering incremental changes to users - Jez Humble.
 
 ## Continuous Delivery & Feature Branches
 
@@ -96,6 +140,78 @@ Continuous deployment is the next step of continuous delivery: Every change that
 
 ---
 
+
+# What is (deployment) pipeline
+
+--
+
+- _"A deployment pipeline is a way to break up your build into stages."_ - Martin Fowler
+
+???
+- This is a very clean description of pipelines.
+- Why we need to break up pipeline into stages? Because we want to have faster feedback.
+
+--
+
+- _"Deployment pipelines are a central part of Continuous Delivery"_ - Martin Fowler
+
+???
+More on Continuous Delivery a bit later.
+
+--
+
+- Glue code
+
+???
+
+- We can also think about pipelines as a glue code.
+
+---
+
+# The goal of deployment pipeline (TBE, AN)
+
+- it makes every part of the process of building, deploying, testing, and releasing software visible to everybody involved, aiding collaboration.
+
+- it improves feedback so that problems are identified, and so resolved, as early in the process as possible.
+
+- it enables teams to deploy and release any version of their software to any environment at will through a fully automated process.
+
+---
+
+# Why we need pipelines?
+
+## Detect any changes that could lead to problems in Production
+Security, Performance, Usability, etc
+
+## Enable collaboration between the various groups involved in delivering software
+
+## Provide visibility about the flow of changes
+
+---
+
+# Deploy pipelines in Jenkins
+
+From Jenkins official site: (TBE)
+
+Pipelines are Jenkins jobs enabled by the Pipeline (formerly called "workflow") plugin and built with simple text scripts that use a Pipeline DSL (domain-specific language) based on the Groovy programming language.
+
+Pipeline (formerly known as Workflow) was built with the community’s requirements for a flexible, extensible, and script-based CD pipeline capability for Jenkins in mind. To that end, Pipeline:
+
+- Can support complex, real-world, CD Pipeline requirements: pipelines can fork/join, loop, parallel, to name a few
+- Is Resilient: pipeline executions can survive master restarts
+- Is Pausable: pipelines can pause and wait for human input/approval
+- Is Efficient: pipelines can restart from saved checkpoints
+- Is Visualized: Pipeline StageView provides status at-a-glance dashboards including trending
+
+???
+- It was a lot of plugins and different jobs interconnected and it becomes single script with Pipeline.
+
+???
+Pipelines leverage the power of multiple steps to execute both simple and complex tasks according to parameters that you establish. Once created, pipelines can build code and orchestrate the work required to drive applications from commit to delivery.
+
+https://github.com/vfarcic/jenkins-pipeline-docker/blob/master/articles/need-jenkins-pipeline.md
+
+---
 # Pipeline anatomy
 --
 
@@ -162,6 +278,12 @@ TBA
 
 ---
 
+# Configuration as a code
+
+## Teams can own their scripts
+
+---
+
 # Pipeline-as-code with Multibranch Workflows (TBE)
 
 The Workflow Multibranch feature (provided by the workflow plugin) provides the following key abilities:
@@ -171,6 +293,14 @@ The Workflow Multibranch feature (provided by the workflow plugin) provides the 
 - Automatic job pruning/deletion for branches deleted from the repository, according to the settings.
 - Flexibility to individually configure branch properties, by overriding the parent properties, if required.
 - Jenkins pipeline-as-code (concept) enables you to maintain your CI/CD workflow logic in the project/application source code repo with no additional configuration to be maintained per branch in Jenkins.
+
+---
+
+Infrastructure as a code
+
+The end goal of infrastructure as code is to perform as many infrastructure tasks as possible programmatically. Key word is "automation."
+
+from: http://www.somic.org/2012/09/28/concise-introduction-to-infrastructure-as-code/
 
 ---
 
@@ -204,13 +334,36 @@ TBA
 
 ---
 
-# Use cases
+# Use case - Single repo
 
-## Use case - 1 (one repo in -> no workflow -> same (target) repo out)
+## Situation
 
-## Use case - 2 (one repo in -> composer workflow -> target repo out)
+## Problems
 
-## Use case - 3 (multiple repos in -> build/composer workflow -> target repo out)
+repo push (source repo) -> deploy (source repo) -> operations -> test
+
+---
+
+# Use case Single repo with Composer workflow
+
+repo push (source repo) -> composer install -> push to target repo -> deploy (target repo) -> operations -> test
+
+---
+
+# Use case - Multiple repos with Composer workflow
+
+repo1 push (source repo 1) -> composer install -> build -> push to target repo -> deploy (target repo) -> operations -> test
+
+repo2 push (source repo 2) -> composer install -> build -> push to target repo -> deploy (target repo) -> operations -> test
+
+---
+
+3 (multiple repos in -> build/composer workflow -> target repo out)
+
+http://www.slideshare.net/quidryan/configuration-as-code
+### Situation
+
+### Problem
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
