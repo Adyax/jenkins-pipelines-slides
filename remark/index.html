@@ -392,6 +392,7 @@ As an admin of Jenkins, I want to keep those files DRY by defining higher-level 
 
 # From simple pipeline to even simplier pipeline
 
+- Configure Pipelines rather than script them
 - Through moving complex things out of sight
 - Owner of project code see and edit only simpliest part of pipeline - conterolled by Project
 - Complex part of pipeline moved into WorkflowLibs repo (inside of Jenkins) - controlled by Operations team
@@ -419,10 +420,6 @@ repo push (source repo) -> composer install -> push to target repo -> deploy (ta
 repo1 push (source repo 1) -> composer install -> build -> push to target repo -> deploy (target repo) -> operations -> test
 
 repo2 push (source repo 2) -> composer install -> build -> push to target repo -> deploy (target repo) -> operations -> test
-
----
-
-![Default-aligned image](buildStage.png)
 
 ---
 

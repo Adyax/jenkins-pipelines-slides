@@ -155,8 +155,13 @@ Continuous deployment is the next step of continuous delivery: Every change that
 <h2>
 What is (deployment) pipeline
 </h2>
-"A deployment pipeline is a way to break up your build into stages." - Martin Fowler
-- "Deployment pipelines are a central part of Continuous Delivery" - Martin Fowler
+<blockquote>
+"A deployment pipeline is a way to break up your build into stages."
+</blockquote>
+<blockquote>
+"Deployment pipelines are a central part of Continuous Delivery"
+</blockquote>
+<p>Martin Fowler</p>
 - Glue code
 <aside class="notes">
 - This is a very clean description of pipelines.
@@ -213,7 +218,7 @@ Pipeline DSL is based on Groovy programming language
 <strong>Pausable</strong> - can pause and wait for human input/approval
 </p>
 <p class="fragment">
-<strong>Efficient</strong> - can restart from saved checkpoints
+<strong>Efficient</strong> - can restart from saved checkpoints (in paid Jenkins version)
 </p>
 <p class="fragment">
 <strong>Visualized</strong> - provides status at-a-glance
@@ -225,8 +230,16 @@ Pipeline DSL is based on Groovy programming language
 
 <section>
 <h2>
-Slide
+Pipeline anatomy
 </h2>
+<p class="fragment">
+<strong>Step</strong> - Single task that is a part of the sequence
+</p>
+<p class="fragment"><strong>Node</strong> - Step that schedules steps contained within it into Jenkins build queue and allocates the workspace.
+</p>
+<p class="fragment">
+<strong>Stage</strong> - Contains steps inside and have some additional configuration
+</p>
 <aside class="notes">
 </aside>
 </section>
