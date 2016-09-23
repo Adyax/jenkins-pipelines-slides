@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro|Open+Sans:400,700&subset=cyrillic,latin);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+            
+            body {
+                font-family: 'Helvetica Neue', 'Helvetica', 'Open Sans', Arial, sans-serif;
+            }
+            
+            /*.remark-code, remark-inline-code {
+                font-family: 'Source Code Pro';
+                line-height: 1.3em;
+            }
+            
+            .remark-slide-content{
+                background: #2d3e50;
+                color:#fff;
+                font-size:2em;
+                line-height: 1.5em;
+            }
+            
+            a, a:visited {
+                color:#fff;
+            }
+            
+            h1{
+                position:relative;
+                margin: 0em -3em 0em -0.75em;
+                background: #1bbc9b;
+                padding:0.25em 0 0.25em 0.75em;
+                font-weight: bold;
+                
+            }
+            
+            .cover{
+                padding:0em;
+                text-align:center;
+            }
+            
+            .cover h1{
+                margin:0px;
+                padding:3em 0em 0.25em 0em;
+                text-align:center;
+                font-size:2.5em;
+            }
+            
+            .group h1{
+                background:none;
+                margin:2.75em 0em 0em 0em;
+                text-align:center;
+                padding:0em;
+                font-size: 3em;
+            }
+            
+            .float-right{
+                float:right;
+            }
+            .float-left{
+                float:left;
+            }*/
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# JENKINS 2 PIPELINES AS A CONTINUOUS INTEGRATION PLATFORM FOR DRUPAL
+
+???
+
+Hello everybody,
+
+- My name is Alexander Tolstikov and I want to present our session named JENKINS 2 PIPELINES AS A CONTINUOUS INTEGRATION PLATFORM FOR DRUPAL. The name for this session is not very correct as we are going to show you much more interesting stuff then just Continuous Integration. You'll have some theory first and than we'll show you some real examples of using pipelines.
+
+---
+
+# Software delivery & deployment pipeline (AN)
+
+## Build
+## Deploy
+## Test
+## Release
+
+Deployment pipeline is the automated implementations of these steps.
+
+???
+- The goal of any software development process is to deliver some product to end users.
+- We want to deliver changes to users in fast, reliable way from development to release.
+- ...
+
+---
+
+# Software release antipatterns
+
+## Manual deploys
+You should only choose version number and click deploy.
+
+## Long release cycles
+
+## Manual configuration of environments
+
+---
+
+# Release process should be
+- frequent
+- automated
+- repeatable
+- lowrisk
+- cheap
+- fast
+- predictable
+
+---
+
+# Principles of successfull software delivery
+
+--
+
+## Repeatable and reliable process
+
+???
+Releasing software should be easy. It should be easy because you have tested every single part of the release process hundreds of times before. It should be as simple as pressing a button. The repeatability and reliability derive from two principles: automate almost everything, and keep everything you need to build, deploy, test, and release your application in version control.
+
+--
+
+## Automate (almost) everything
+
+???
+You don’t need to automate everything at once. You should start by looking at that part of your build, deploy, test, and release process that is currently the bottleneck. You can, and should, automate gradually over time.i
+
+--
+
+## Put everything in version control
+???
+- Code
+- Configuration
+-- Application configuration
+-- Infrastructure configuration
+- Deploy scripts
+- Tests
+- Documentation
+
+--
+
+## If it hurts - do it more frequently
+
+--
+
+## Done means released
+
+--
+
+## Everybody is responsible
+
+---
+
+# Continuous Integration
+
+Continuous Integration (CI) is the practice of merging all developer working copies to a shared mainline several times a day.
+
+---
+
+# Continuous Delivery
+
+Continuous Delivery (CD) is a software strategy that enables organizations to deliver new features to users as fast and efficiently as possible.
+
+_"Continuous Delivery is a software development discipline where you build software in such a way that the software can be released to production at any time"_ - Martin Fowler.
+
+Continuous Delivery aims to reduce the cost, time, and risk of delivering incremental changes to users - Jez Humble.
+
+## Continuous Delivery & Feature Branches
+
+Every successful build on your Master branch should be releasable. Your feature branches gets merged into master, when they have been tested.
+
+???
+Continuous delivery is sometimes confused with continuous deployment. Continuous deployment means that every change is automatically deployed to production. Continuous delivery means that the team ensures every change can be deployed to production but may choose not to do it, usually due to business reasons. In order to do continuous deployment one must be doing continuous delivery
+
+---
+
+# Continuous Deployment
+
+Continuous deployment is the next step of continuous delivery: Every change that passes the automated tests is deployed to production automatically.
+
+---
+
+
+# What is (deployment) pipeline
+
+--
+
+- _"A deployment pipeline is a way to break up your build into stages."_ - Martin Fowler
+
+???
+- This is a very clean description of pipelines.
+- Why we need to break up pipeline into stages? Because we want to have faster feedback.
+
+--
+
+- _"Deployment pipelines are a central part of Continuous Delivery"_ - Martin Fowler
+
+???
+More on Continuous Delivery a bit later.
+
+--
+
+- Glue code
+
+???
+
+- We can also think about pipelines as a glue code.
+
+---
+
+# The goal of deployment pipeline (TBE, AN)
+
+- it makes every part of the process of building, deploying, testing, and releasing software visible to everybody involved, aiding collaboration.
+
+- it improves feedback so that problems are identified, and so resolved, as early in the process as possible.
+
+- it enables teams to deploy and release any version of their software to any environment at will through a fully automated process.
+
+---
+
+# Why we need pipelines?
+
+## Detect any changes that could lead to problems in Production
+Security, Performance, Usability, etc
+
+## Enable collaboration between the various groups involved in delivering software
+
+## Provide visibility about the flow of changes
+
+---
+
+# Deploy pipelines in Jenkins
+
+From Jenkins official site: (TBE)
+
+Pipelines are Jenkins jobs enabled by the Pipeline (formerly called "workflow") plugin and built with simple text scripts that use a Pipeline DSL (domain-specific language) based on the Groovy programming language.
+
+Pipeline (formerly known as Workflow) was built with the community’s requirements for a flexible, extensible, and script-based CD pipeline capability for Jenkins in mind. To that end, Pipeline:
+
+- Can support complex, real-world, CD Pipeline requirements: pipelines can fork/join, loop, parallel, to name a few
+- Is Resilient: pipeline executions can survive master restarts
+- Is Pausable: pipelines can pause and wait for human input/approval
+- Is Efficient: pipelines can restart from saved checkpoints
+- Is Visualized: Pipeline StageView provides status at-a-glance dashboards including trending
+
+???
+- It was a lot of plugins and different jobs interconnected and it becomes single script with Pipeline.
+
+???
+Pipelines leverage the power of multiple steps to execute both simple and complex tasks according to parameters that you establish. Once created, pipelines can build code and orchestrate the work required to drive applications from commit to delivery.
+
+https://github.com/vfarcic/jenkins-pipeline-docker/blob/master/articles/need-jenkins-pipeline.md
+
+---
+# Pipeline anatomy
+--
+
+## Step
+--
+
+## Node
+--
+
+## Stage
+
+---
+
+## Simple pipeline
+
+Pipeline code:
+
+```groovy
+node {
+*    echo 'Hello from Pipeline'
+}
+```
+
+Pipeline execution log:
+
+```groovy
+Started by user anonymous
+[Pipeline] echo
+Hello from Pipeline
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+---
+
+## Pipeline with stages
+
+Pipeline code:
+
+```groovy
+node {
+    stage('init')
+*    echo 'Hello from Pipeline'
+
+    stage('build')
+    ...
+}
+```
+
+Pipeline execution log:
+
+```groovy
+Started by user anonymous
+[Pipeline] echo
+Hello from Pipeline
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+---
+
+# Pipeline as a code
+TBA
+
+---
+
+# Configuration as a code
+
+## Teams can own their scripts
+
+---
+
+# Pipeline-as-code with Multibranch Workflows (TBE)
+
+The Workflow Multibranch feature (provided by the workflow plugin) provides the following key abilities:
+
+- Automatic Workflow (job) creation in Jenkins per new branch in the repo (assuming webhooks are registered from GH to Jenkins).
+- Build specific to that child-branch and its unique scm change and build history.
+- Automatic job pruning/deletion for branches deleted from the repository, according to the settings.
+- Flexibility to individually configure branch properties, by overriding the parent properties, if required.
+- Jenkins pipeline-as-code (concept) enables you to maintain your CI/CD workflow logic in the project/application source code repo with no additional configuration to be maintained per branch in Jenkins.
+
+---
+
+Infrastructure as a code
+
+The end goal of infrastructure as code is to perform as many infrastructure tasks as possible programmatically. Key word is "automation."
+
+from: http://www.somic.org/2012/09/28/concise-introduction-to-infrastructure-as-code/
+
+---
+
+# Integration with Gitlab
+
+screen
+
+---
+
+# Job DSL Plugin
+
+TBA
+
+---
+
+The developers that deal with them as not necessarily familar with Jenkins, so those files should be high-level and understandable to those who don't know Jenkins.
+As an admin of Jenkins, I want to keep those files DRY by defining higher-level custom idioms
+
+---
+
+# What we had
+
+- All configuration was UI based
+- redundant pointing-and-clicking in Jenkins admin interface
+- many jobs that do almost same things differently
+- no common strategy for standard things like emails config, build discarding, etc
+- lots of deployment technical debt
+
+---
+
+# From simple pipeline to even simplier pipeline
+
+- Through moving complex things out of sight
+- Owner of project code see and edit only simpliest part of pipeline - conterolled by Project
+- Complex part of pipeline moved into WorkflowLibs repo (inside of Jenkins) - controlled by Operations team
+
+---
+
+# Use case - Single repo
+
+## Situation
+
+## Problems
+
+repo push (source repo) -> deploy (source repo) -> operations -> test
+
+---
+
+# Use case Single repo with Composer workflow
+
+repo push (source repo) -> composer install -> push to target repo -> deploy (target repo) -> operations -> test
+
+---
+
+# Use case - Multiple repos with Composer workflow
+
+repo1 push (source repo 1) -> composer install -> build -> push to target repo -> deploy (target repo) -> operations -> test
+
+repo2 push (source repo 2) -> composer install -> build -> push to target repo -> deploy (target repo) -> operations -> test
+
+---
+
+![Default-aligned image](buildStage.png)
+
+---
+
+# (multiple repos in -> build/composer workflow -> target repo out)
+
+http://www.slideshare.net/quidryan/configuration-as-code
+### Situation
+
+### Problem
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+        highlightLines: true    
+      });
+    </script>
+  </body>
+</html>
