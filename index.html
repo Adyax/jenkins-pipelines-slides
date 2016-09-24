@@ -244,9 +244,146 @@ Pipeline anatomy
 </aside>
 </section>
 
+<section style="padding: 0px; margin: 0px">
+<h2>
+Simple pipeline
+</h2>
+<div style="width: 100%">
+<div style="width: 47%; display: inline-block; vertical-align: top;">
+Pipeline code
+<pre><code>
+node {
+    stage('hello') {
+        echo 'Hello Drupalcon!'
+    }
+
+    stage('build') {
+        echo "Give me a current directory"
+        sh('pwd')
+    }
+}
+</code></pre>
+</div>
+
+<div style="width: 47%; display: inline-block; vertical-align: top;">
+Pipeline log
+<pre><code>
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (hello)
+[Pipeline] echo
+Hello Drupalcon!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (build)
+[Pipeline] echo
+Give me a current directory
+[Pipeline] sh
+[simple] Running shell script
++ pwd
+/var/jenkins_home/workspace/simple/simple
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+</code></pre>
+</div>
+</div>
+<aside class="notes">
+</aside>
+</section>
+
 <section>
 <h2>
-Slide
+Drupal Composer workflow : Why?
+</h2>
+...<br />
+This is a future.
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+Drupal Composer workflow : Requirements
+</h2>
+<p class="fragment">
+Requirement: You should NOT commit "vendor" (drupal core & contrib packages) to source control with proper Composer workflow
+</p>
+<p class="fragment">
+Requirement: You should NOT run "composer update" on Production as you want same version of code as in Development
+</p>
+<p class="fragment">
+Requirement:  You should NOT run "composer install" on Production, because:<br/>
+It can be failed because of timeouts/other issues<br />
+You need to test built code before it hits Production<br />
+It can take a long time
+</p>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+Drupal Composer workflow : Problem
+</h2>
+<p class="fragment">
+How to deliver result of the build to the Production without commiting vendor code into Source control or executing "compose install" directly on Production servers?
+</p>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+Drupal Composer workflow : Solution
+</h2>
+CI/CD workflow and deliver code to target environments:
+<ul>
+<li>
+Option 1: With tarball, capistrano, sync, etc.
+This solution will not work with major Drupal hosting/service providers, like Acquia, because code should be delivered through Git repo.
+</li>
+<li>
+Option 2: CI/CD workflow and deliver code with additional Git repository (target repo).<br/>
+Commit to source repo -> CI (Jenkins) -> Build (sh "composer install") -> Commit to target repo -> Deploy to target environment
+ - TODO: PUT SCHEME HERE
+</li>
+</ul>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+Drupal Composer workflow : Tools
+</h2>
+<ul>
+<li>
+Docman - DOCroot MANagement
+</li>
+<li>
+Composer - composer workflow
+</li>
+<li>
+Druflow - deploy procedures and drupal-procedures Swiss-knife
+</li>
+<li>
+Behat - testing framework
+</li>
+<li>
+Pipeline - to orchestrate it all
+</li>
+</ul>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+Job DSL plugin
 </h2>
 <aside class="notes">
 </aside>
@@ -254,7 +391,7 @@ Slide
 
 <section>
 <h2>
-Slide
+Job DSL plugin
 </h2>
 <aside class="notes">
 </aside>
@@ -262,7 +399,7 @@ Slide
 
 <section>
 <h2>
-Slide
+Job DSL plugin
 </h2>
 <aside class="notes">
 </aside>
@@ -270,7 +407,26 @@ Slide
 
 <section>
 <h2>
-Slide
+Pipeline Libraries
+</h2>
+- Global library
+- External libraries
+
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+Job DSL plugin
+</h2>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>
+BlueOcean plugin
 </h2>
 <aside class="notes">
 </aside>
@@ -319,6 +475,8 @@ Slide
 			Reveal.initialize({
 				// showNotes: true,
 				history: true,
+				//width: 1400,
+    				//height: 700,
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
