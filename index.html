@@ -471,13 +471,39 @@ mkdir -p ../../../reports
 </section>
 
 <section>
-<h2>Solution Pipeline (not Final!)</h2>
+<h2>Solution Pipeline (not Final!): issues</h2>
 <ul>
 <li class="fragment">
 Lots of almost same code - Not DRY! (Don't repeat yourself)
 </li>
 <li class="fragment">
+If I need to change some procedure I need to change everywhere
+</li>
+<li class="fragment">
 Logic is complicated
+</li>
+</ul>
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>Solution Pipeline (not Final!): How to fix it</h2>
+<ul>
+<li class="fragment">
+Use libraries (internal & extermal)
+<small>Move the logic outside the pipeline and leave only glue code and some configuration - Configure Pipelines rather than script them</small>
+</li>
+<li class="fragment">
+Single responsibility - first of the <b>S</b>OLID principles
+<small>
+Break-up everything into small pieces that can do one thing and do it well (Single Responsibility principle)
+</small>
+</li>
+<li class="fragment">
+Single responsibility - first of the <b>S</b>OLID principles
+<small>
+</small>
 </li>
 </ul>
 <aside class="notes">
@@ -542,10 +568,6 @@ executePipeline {
                     action: 'Druflow.deployFlow',
                     params: [
                       deployFlowEnvironment: 'test',
-                      //deployFlowConfirm: [
-                      // environment: 'test',
-                      //  message: 'Deploy to Production?'
-                      //]
                     ]
                 ],
             ],
