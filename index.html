@@ -353,7 +353,6 @@ node {
   stage 'build' {
     // ...
     // SKIPPED SOME CONFIGURATION CODE
-
     if (configRepo) {
       sh(
 	  """#!/bin/bash -l
@@ -362,7 +361,6 @@ node {
       )
       params.dir
     }
-
     sh(
       """#!/bin/bash -l
       if [ "${force}" == "1" ]; then
@@ -447,12 +445,12 @@ mkdir -p ../../../reports
     
   }
 
-  stage ('stage acceptance testing') {
+  stage ('prod acceptance testing') {
     // SKIPPED SOME CONFIGURATION CODE
     // ...
     dir('docroot/master/docroot') {
         if (fileExists('../bin/behat')) {
-            if (fileExists("../code/common/behat.stage.yml")) {
+            if (fileExists("../code/common/behat.prod.yml")) {
                 sh """#!/bin/bash -l
 mkdir -p ../../../reports
 ../bin/behat --config=../code/common/behat.stage.yml --format=pretty --out=std --format=junit --out=../../../reports @acceptance ${features}
@@ -463,93 +461,9 @@ mkdir -p ../../../reports
     
   }
 
-}
-executePipeline {
-    pipeline =
-        [
-            'build': [
-                [
-                    action: 'Docman.config',
-                ],
-                [
-                    action: 'Docman.jsonConfig',
-                ],
-                [
-                    action: 'Docman.deploy',
-                ],
-            ],
-            'stage prepare': [
-                [
-                    action: 'Druflow.copySite',
-                    params: [
-                      fromEnvironment: 'test',
-                      toEnvironment: 'dev',
-                      db: 'aroq',
-                    ]
-                ],
-            ],
-            'stage deploy': [
-                [
-                    action: 'Druflow.deployFlow',
-                    params: [
-                      deployFlowEnvironment: 'dev',
-                    ]
-                ],
-            ],
-            'stage smoke testing': [
-                [
-                    action: 'Behat.perform',
-                    params: [
-                      testEnvironment: 'dev',
-                      tags: '@smoke',
-                    ]
-                ],
-            ],
-            'stage acceptance testing': [
-                [
-                    action: 'Behat.perform',
-                    params: [
-                      testEnvironment: 'dev',
-                      tags: '@acceptance',
-                    ]
-                ],
-            ],
-            'prod deploy': [
-                [
-                    action: 'Druflow.deployFlow',
-                    params: [
-                      deployFlowEnvironment: 'test',
-                      //deployFlowConfirm: [
-                      // environment: 'test',
-                      //  message: 'Deploy to Production?'
-                      //]
-                    ]
-                ],
-            ],
-            'prod smoke testing': [
-                [
-                    action: 'Behat.perform',
-                    params: [
-                      testEnvironment: 'test',
-                      tags: '@smoke',
-                    ]
-                ],
-            ],
-            'prod acceptance testing': [
-                [
-                    action: 'Behat.perform',
-                    params: [
-                      testEnvironment: 'test',
-                      tags: '@acceptance',
-                    ]
-                ],
-            ],
-            'finalize': [
-                [
-                    action: 'Publish.junit',
-                ],
-            ]
-        ]
+  stage ('finalize') {
+    step([$class: 'JUnitResultArchiver', testResults: params.reportsPath])
+  }
 }
 </code></pre>
 <aside class="notes">
