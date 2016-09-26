@@ -275,15 +275,15 @@ This is a future.
 <section>
 <h2>Composer workflow: Requirements</h2>
 <p class="fragment">
-<u>Requirement</u>: You should NOT commit "vendor" <small>(Drupal core & contrib packages) to source control with proper Composer workflow</small>
+<u>Requirement</u>: You shouldn't commit "vendor" <small>(Drupal core & contrib packages) to source control with proper Composer workflow</small>
 </p>
 <p class="fragment">
-<u>Requirement</u>: You should NOT run "composer update"<small> on Production as you want same version of code as in Development</small>
+<u>Requirement</u>: You shouldn't run "composer update" on PROD <small> as you want same version of code as in Development</small>
 </p>
 <p class="fragment">
-<u>Requirement</u>: You should NOT run "composer install"<br/>
-<small> in Production as it can fail because of timeouts/other issues<br />
-You need to test built code before it hits Production<br />
+<u>Requirement</u>: You should NOT run "composer install" on PROD<br/>
+<small> as it can fail because of timeouts/other issues<br />
+you need to test built code before it hits Production<br />
 It can take a long time to be finished</small>
 </p>
 <aside class="notes">
@@ -324,8 +324,8 @@ Option 2: CI/CD workflow to deliver code with additional Git repository (target 
 <section>
 <h2>Composer workflow: Tools</h2>
 <ul>
-<li>Docman - DOCroot MANagement</li>
 <li>Composer - composer workflow</li>
+<li>Docman - DOCroot MANagement</li>
 <li>Druflow - deploy procedures and drupal-procedures Swiss-knife</li>
 <li>Behat - testing framework</li>
 <li>Pipeline - to orchestrate it all</li>
@@ -335,7 +335,319 @@ Option 2: CI/CD workflow to deliver code with additional Git repository (target 
 </section>
 
 <section>
-<h2>Job DSL plugin</h2>
+<h2>Docman - DOCroot MANagement</h2>
+One or more sources repos + docman config -> docman -> target repo
+<aside class="notes">
+</aside>
+</section>
+
+<section>
+<h2>Solution Pipeline (not Final!)</h2>
+<pre><code>
+node {
+  stage 'config' {
+    // ...
+    // SKIPPED SOME CONFIGURATION CODE
+  }
+
+  stage 'build' {
+    // ...
+    // SKIPPED SOME CONFIGURATION CODE
+
+    if (configRepo) {
+      sh(
+	  """#!/bin/bash -l
+	  docman init ${params.path} ${configRepo} -s
+	  """
+      )
+      params.dir
+    }
+
+    sh(
+      """#!/bin/bash -l
+      if [ "${force}" == "1" ]; then
+	rm -fR docroot
+      fi
+      docman init ${params.docrootDir} ${config_repo} -s
+      cd docroot
+      docman deploy git_target ${deployProjectName} branch ${version} ${flag}
+      """
+    )
+  }
+
+  stage ('stage prepare') {
+    dir('druflow') {
+	git 'https://github.com/aroq/druflow.git'
+	sh "./gradlew app -Ddebug=${debug} -Dsite=default -Denv=${params.fromEnvironment} -Dargument='${params.db} ${params.toEnvironment}' -DexecuteCommand=dbCopyAC -Dworkspace=${params.workspace} -DdocrootDir=${docrootDir}"
+    }
+  }
+
+  stage ('stage deploy') {
+    // SKIPPED SOME CONFIGURATION CODE
+    // ...
+    dir('druflow') {
+	git 'https://github.com/aroq/druflow.git'
+	sh "./gradlew app -Ddebug=${debug} -DprojectName=${deployProjectName} -Denv=stage -DexecuteCommand=deployFlow -Dworkspace=${params.workspace} -DdocrootDir=${docrootDir}${options}"
+    }
+  }
+
+  stage ('stage smoke testing') {
+    // SKIPPED SOME CONFIGURATION CODE
+    // ...
+    dir('docroot/master/docroot') {
+        if (fileExists('../bin/behat')) {
+            if (fileExists("../code/common/behat.stage.yml")) {
+                sh """#!/bin/bash -l
+mkdir -p ../../../reports
+../bin/behat --config=../code/common/behat.stage.yml --format=pretty --out=std --format=junit --out=../../../reports @smoke ${features}
+"""
+            }
+	}
+    }
+  }
+
+  stage ('stage acceptance testing') {
+    // SKIPPED SOME CONFIGURATION CODE
+    // ...
+    dir('docroot/master/docroot') {
+        if (fileExists('../bin/behat')) {
+            if (fileExists("../code/common/behat.stage.yml")) {
+                sh """#!/bin/bash -l
+mkdir -p ../../../reports
+../bin/behat --config=../code/common/behat.stage.yml --format=pretty --out=std --format=junit --out=../../../reports @acceptance ${features}
+"""
+            }
+	}
+    }
+    
+  }
+
+  stage ('prod deploy') {
+    // SKIPPED SOME CONFIGURATION CODE
+    // ...
+    dir('druflow') {
+	git 'https://github.com/aroq/druflow.git'
+	sh "./gradlew app -Ddebug=${debug} -DprojectName=${deployProjectName} -Denv=prod -DexecuteCommand=deployFlow -Dworkspace=${params.workspace} -DdocrootDir=${docrootDir}${options}"
+    }
+  }
+
+  stage ('prod smoke testing') {
+    // SKIPPED SOME CONFIGURATION CODE
+    // ...
+    dir('docroot/master/docroot') {
+        if (fileExists('../bin/behat')) {
+            if (fileExists("../code/common/behat.prod.yml")) {
+                sh """#!/bin/bash -l
+mkdir -p ../../../reports
+../bin/behat --config=../code/common/behat.prod.yml --format=pretty --out=std --format=junit --out=../../../reports @smoke ${features}
+"""
+            }
+	}
+    }
+    
+  }
+
+  stage ('stage acceptance testing') {
+    // SKIPPED SOME CONFIGURATION CODE
+    // ...
+    dir('docroot/master/docroot') {
+        if (fileExists('../bin/behat')) {
+            if (fileExists("../code/common/behat.stage.yml")) {
+                sh """#!/bin/bash -l
+mkdir -p ../../../reports
+../bin/behat --config=../code/common/behat.stage.yml --format=pretty --out=std --format=junit --out=../../../reports @acceptance ${features}
+"""
+            }
+	}
+    }
+    
+  }
+
+}
+executePipeline {
+    pipeline =
+        [
+            'build': [
+                [
+                    action: 'Docman.config',
+                ],
+                [
+                    action: 'Docman.jsonConfig',
+                ],
+                [
+                    action: 'Docman.deploy',
+                ],
+            ],
+            'stage prepare': [
+                [
+                    action: 'Druflow.copySite',
+                    params: [
+                      fromEnvironment: 'test',
+                      toEnvironment: 'dev',
+                      db: 'aroq',
+                    ]
+                ],
+            ],
+            'stage deploy': [
+                [
+                    action: 'Druflow.deployFlow',
+                    params: [
+                      deployFlowEnvironment: 'dev',
+                    ]
+                ],
+            ],
+            'stage smoke testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'dev',
+                      tags: '@smoke',
+                    ]
+                ],
+            ],
+            'stage acceptance testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'dev',
+                      tags: '@acceptance',
+                    ]
+                ],
+            ],
+            'prod deploy': [
+                [
+                    action: 'Druflow.deployFlow',
+                    params: [
+                      deployFlowEnvironment: 'test',
+                      //deployFlowConfirm: [
+                      // environment: 'test',
+                      //  message: 'Deploy to Production?'
+                      //]
+                    ]
+                ],
+            ],
+            'prod smoke testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'test',
+                      tags: '@smoke',
+                    ]
+                ],
+            ],
+            'prod acceptance testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'test',
+                      tags: '@acceptance',
+                    ]
+                ],
+            ],
+            'finalize': [
+                [
+                    action: 'Publish.junit',
+                ],
+            ]
+        ]
+}
+</code></pre>
+<aside class="notes">
+</aside>
+</section>
+
+
+<section>
+<h2>Final Solution Pipeline</h2>
+<pre><code>
+executePipeline {
+    pipeline =
+        [
+            'build': [
+                [
+                    action: 'Docman.config',
+                ],
+                [
+                    action: 'Docman.jsonConfig',
+                ],
+                [
+                    action: 'Docman.deploy',
+                ],
+            ],
+            'stage prepare': [
+                [
+                    action: 'Druflow.copySite',
+                    params: [
+                      fromEnvironment: 'test',
+                      toEnvironment: 'dev',
+                      db: 'aroq',
+                    ]
+                ],
+            ],
+            'stage deploy': [
+                [
+                    action: 'Druflow.deployFlow',
+                    params: [
+                      deployFlowEnvironment: 'dev',
+                    ]
+                ],
+            ],
+            'stage smoke testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'dev',
+                      tags: '@smoke',
+                    ]
+                ],
+            ],
+            'stage acceptance testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'dev',
+                      tags: '@acceptance',
+                    ]
+                ],
+            ],
+            'prod deploy': [
+                [
+                    action: 'Druflow.deployFlow',
+                    params: [
+                      deployFlowEnvironment: 'test',
+                      //deployFlowConfirm: [
+                      // environment: 'test',
+                      //  message: 'Deploy to Production?'
+                      //]
+                    ]
+                ],
+            ],
+            'prod smoke testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'test',
+                      tags: '@smoke',
+                    ]
+                ],
+            ],
+            'prod acceptance testing': [
+                [
+                    action: 'Behat.perform',
+                    params: [
+                      testEnvironment: 'test',
+                      tags: '@acceptance',
+                    ]
+                ],
+            ],
+            'finalize': [
+                [
+                    action: 'Publish.junit',
+                ],
+            ]
+        ]
+}
+</code></pre>
 <aside class="notes">
 </aside>
 </section>
