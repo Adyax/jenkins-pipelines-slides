@@ -340,14 +340,14 @@ How to deliver result of the build to the Production without commiting vendor co
 <h2>
 Drupal Composer workflow : Solution
 </h2>
-CI/CD workflow and deliver code to target environments:
+Continuous Delivery workflow with delivery options:
 <ul>
 <li>
 Option 1: With tarball, capistrano, sync, etc.
 This solution will not work with major Drupal hosting/service providers, like Acquia, because code should be delivered through Git repo.
 </li>
 <li>
-Option 2: CI/CD workflow and deliver code with additional Git repository (target repo).<br/>
+Option 2: With additional Git repository (target repo).<br/>
 Commit to source repo -> CI (Jenkins) -> Build (sh "composer install") -> Commit to target repo -> Deploy to target environment
  - TODO: PUT SCHEME HERE
 </li>
