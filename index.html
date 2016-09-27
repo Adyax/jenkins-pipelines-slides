@@ -329,6 +329,7 @@ Option 2: CI/CD workflow to deliver code with additional Git repository (target 
 <li>Druflow - deploy procedures and drupal-procedures Swiss-knife</li>
 <li>Behat - testing framework</li>
 <li>Pipeline - to orchestrate it all</li>
+<li>Pipeline libraries - to make it DRY</li>
 </ul>
 <aside class="notes">
 </aside>
@@ -337,7 +338,14 @@ Option 2: CI/CD workflow to deliver code with additional Git repository (target 
 <section>
 <h2>Docman - DOCroot MANagement</h2>
 https://adyax.github.io/docman/ <br/>
-One or more sources repos + docman config -> docman -> target repo
+<ul>
+<li class="fragment">
+One or more source repos + docman config -> docman -> target repo
+</li>
+<li class="fragment">
+Blackbox (you don't need to know what is inside, you just config and forget)
+</li>
+</ul>
 <aside class="notes">
 </aside>
 </section>
@@ -365,14 +373,36 @@ Automatic Drupal updates!
 Capistrano deploys
 </li>
 <li class="fragment">
-Single Responsibility, Open/closed principles (from SOLID) are respected
+Groovy based (like Jenkins Pipeline itself)
+</li>
+<li class="fragment">
+Single Responsibility <small>- do one thing and do it well</small><br/>
+Open/closed principles <small>- open for extension, but closed for modification</small>
 </li>
 </ul>
-
 <aside class="notes">
 </aside>
 </section>
 
+<section>
+<h2>Pipeline libraries</h2>
+<ul>
+<li class="fragment">
+Global library
+</li>
+<li class="fragment">
+External libraries
+</li>
+<li class="fragment">
+Keeps everything DRY
+</li>
+<li class="fragment">
+https://github.com/aroq/jenkins-pipeline-library<br/>
+</li>
+</ul>
+<aside class="notes">
+</aside>
+</section>
 
 <section>
 <h2>Solution Pipeline (not Final!)</h2>
@@ -653,21 +683,6 @@ executePipeline {
 </section>
 
 <section>
-<h2>Pipeline Libraries</h2>
-<ul>
-<li>Global library</li>
-<li>External libraries</li>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Job DSL plugin</h2>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
 <h2>BlueOcean plugin</h2>
 <aside class="notes">
 </aside>
@@ -675,12 +690,6 @@ executePipeline {
 
 <section>
 <h2>Gitlab integration</h2>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
-<h2>Slide</h2>
 <aside class="notes">
 </aside>
 </section>
