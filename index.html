@@ -336,10 +336,43 @@ Option 2: CI/CD workflow to deliver code with additional Git repository (target 
 
 <section>
 <h2>Docman - DOCroot MANagement</h2>
+https://adyax.github.io/docman/ <br/>
 One or more sources repos + docman config -> docman -> target repo
 <aside class="notes">
 </aside>
 </section>
+
+<section>
+<h2>Druflow - DRUpal FLOW</h2>
+https://github.com/aroq/druflow
+
+<ul>
+<li class="fragment">
+Knows how to deal with Drupal
+</li>
+<li class="fragment">
+Knows how to deal with Acquia Cloud API
+<small>DB backups, site copies, deploys, etc</small>
+</li>
+<li class="fragment">
+Knows how to deal with multisite
+<small>Automatic databases & domains creation based on your multisite directory setup</small>
+</li>
+<li class="fragment">
+Automatic Drupal updates!
+</li>
+<li class="fragment">
+Capistrano deploys
+</li>
+<li class="fragment">
+Single Responsibility, Open/closed principles (from SOLID) are respected
+</li>
+</ul>
+
+<aside class="notes">
+</aside>
+</section>
+
 
 <section>
 <h2>Solution Pipeline (not Final!)</h2>
@@ -609,6 +642,11 @@ executePipeline {
 </section>
 
 <section>
+<h2>Build Stage</h2>
+<img data-src="images/buildStage.png">
+</section>
+
+<section>
 <h2>Job DSL plugin</h2>
 <aside class="notes">
 </aside>
@@ -636,7 +674,7 @@ executePipeline {
 </section>
 
 <section>
-<h2>Slide</h2>
+<h2>Gitlab integration</h2>
 <aside class="notes">
 </aside>
 </section>
@@ -645,11 +683,6 @@ executePipeline {
 <h2>Slide</h2>
 <aside class="notes">
 </aside>
-</section>
-
-<section>
-<h2>Build Stage</h2>
-<img data-src="images/buildStage.png">
 </section>
 
 <section>
