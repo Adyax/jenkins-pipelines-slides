@@ -471,7 +471,7 @@ mkdir -p ../../../reports
 </section>
 
 <section>
-<h2>Solution Pipeline (not Final!): issues</h2>
+<h2>Solution Pipeline : issues</h2>
 <ul>
 <li class="fragment">
 Lots of almost same code - Not DRY! (Don't repeat yourself)
@@ -488,11 +488,11 @@ Logic is complicated
 </section>
 
 <section>
-<h2>Solution Pipeline (not Final!): How to fix it</h2>
+<h2>Solution Pipeline : issues : How to fix them</h2>
 <ul>
 <li class="fragment">
-Use libraries (internal & extermal)
-<small>Move the logic outside the pipeline and leave only glue code and some configuration - Configure Pipelines rather than script them</small>
+Use pipeline libraries (internal & extermal)
+<small>Move the operations specific logic outside the pipeline and leave only the glue code and some configuration - Configure Pipelines rather than script them</small>
 </li>
 <li class="fragment">
 Single responsibility - first of the <b>S</b>OLID principles
@@ -602,7 +602,8 @@ executePipeline {
 </section>
 
 <section>
-<h2>Job DSL plugin</h2>
+<h2>Pipeline comparision</h2>
+<img data-src="images/pipelines_compare.png">
 <aside class="notes">
 </aside>
 </section>
