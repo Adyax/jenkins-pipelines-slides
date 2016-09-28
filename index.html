@@ -93,6 +93,26 @@ Principles of successfull software delivery
 <p class="fragment">Everybody is responsible</p>
 <aside class="notes">
 Releasing software should be easy. It should be easy because you have tested every single part of the release process hundreds of times before. It should be as simple as pressing a button. The repeatability and reliability derive from two principles: automate almost everything, and keep everything you need to build, deploy, test, and release your application in version control.
+
+The process for releasing/deploying software MUST be repeatable and reliable. This leads onto the 2nd principle…
+<br/>
+Automate everything! A manual deployment can never be described as repeatable and reliable (not if I’m doing it anyway!). You have to invest seriously in automating all the tasks you do repeatedly, and this tends to lead to reliability.
+<br/>
+If somethings difficult or painful, do it more often. On the surface this sounds silly, but basically what this means is that doing something painful, more often, will lead you to improve it, probably automate it, and this will eventually make it painless and easy. Take for example doing a deployment of a database schema. If this is tricky, you tend to not do it very often, you put it off, maybe you’ll do 1 a month. Really what you should do is improve the process of doing the schema deployments, get good at it, and do it more often, like 1 a day if needed. If you’re doing something every day, you’re going to be a lot better at it than if you only do it once a month.
+<br/>
+Keep everything in source control – this sounds like a bit of a weird one in this day and age, I mean seriously, who doesn’t keep everything in source control? Apparently quite a few people. Who knew?
+<br/>
+
+Done means “released”. This implies ownership of a project right up until it’s in the hands of the user, and working properly. There’s none of this “I’ve checked in my code so it’s done as far as I’m concerned”. I have been fortunate enough to work with some software teams who eagerly made sure their code changes were working right up to the point when their changes were in production, and then monitored the live system to make sure their changes were successful. On the other hand I’ve worked with teams who though their responsibility ended when they checked their code in to the VCS.
+<br/>
+
+Build quality in! Take the time to invest in your quality metrics. A project with good, targeted quality metrics (we could be talking about unit test coverage, code styling, rules violations, complexity measurements – or preferably, all of the above) will invariably be better than one without, and easier to maintain in the long run.
+<br/>
+
+Everybody has responsibility for the release process. A program running on a developers laptop isn’t going to make any money for the company. Similarly, a project with no plan for deployment will never get released, and again make no money. Companies make money by getting their products released to customers, therefore, this process should be in the interest of everybody. Developers should develop projects with a mind for how to deploy them. Project managers should plan projects with attention to deployment. Testers should test for deployment defects with as much care and attention as they do for code defects (and this should be automated and built into the deployment task itself).
+<br/>
+
+Improve continuously. Don’t sit back and wait for your system to become out of date or impossible to maintain. Continuous improvement means your system will always be evolving and therefore easier to change when needs be.
 </aside>
 </section>
 
@@ -265,6 +285,20 @@ Give me a current directory
 </section>
 
 <section>
+  <h2>Pipeline as a code</h2>
+  <ul>
+    <li>
+      Jenkinsfile<br/><small>container for the pipeline</small>
+    </li>
+    <li>
+      Multibranch pipelines<br/><small>automatic pipelines creation for each branch in repo, specific builds for each branch, no need for additional configuration for every branch.</small>
+    </li>
+  </ul>
+  <aside class="notes">
+  </aside>
+</section>
+
+<section>
 <h2>Drupal Composer workflow: Why?</h2>
 <ul>
 <li>
@@ -330,7 +364,7 @@ Option 2: CI/CD workflow to deliver code with additional Git repository (target 
 </section>
 
 <section>
-<h2>Composer workflow: Tools</h2>
+<h2>Tools</h2>
 <ul>
 <li>Composer - composer workflow</li>
 <li>Docman - DOCroot MANagement</li>
