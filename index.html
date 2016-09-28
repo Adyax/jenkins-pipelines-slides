@@ -393,26 +393,6 @@ Open/closed principles <small>- open for extension, but closed for modification<
 </section>
 
 <section>
-<h2>Pipeline libraries</h2>
-<ul>
-<li class="fragment">
-Global library
-</li>
-<li class="fragment">
-External libraries
-</li>
-<li class="fragment">
-Keeps everything DRY
-</li>
-<li class="fragment">
-https://github.com/aroq/jenkins-pipeline-library<br/>
-</li>
-</ul>
-<aside class="notes">
-</aside>
-</section>
-
-<section>
 <h2>Desired workflow</h2>
 <img data-src="images/flow.png">
 <aside class="notes">
@@ -589,6 +569,27 @@ Additional DSL (domain-specific language) <small>specific to Drupal operations</
 </section>
 
 <section>
+<h2>Pipeline libraries</h2>
+<ul>
+<li class="fragment">
+Global library
+</li>
+<li class="fragment">
+External libraries
+</li>
+<li class="fragment">
+Keeps everything DRY
+</li>
+<li class="fragment">
+https://github.com/aroq/jenkins-pipeline-library<br/>
+</li>
+</ul>
+<aside class="notes">
+</aside>
+</section>
+
+
+<section>
 <h2>Final Solution Pipeline</h2>
 <pre><code>
 executePipeline {
@@ -744,6 +745,14 @@ executePipeline {
 </section>
 
 <section>
+<h2>BlueOcean plugin</h2>
+<img data-src="images/blueocean3.png">
+<aside class="notes">
+</aside>
+</section>
+</section>
+
+<section>
 <h2>Gitlab integration</h2>
 <img data-src="images/gitlab1.png">
 <aside class="notes">
@@ -753,8 +762,10 @@ executePipeline {
 <section>
 <h2>Acquia Cloud integration</h2>
 <img data-src="images/ac2.png">
-<aside class="notes">
-</aside>
+</section>
+
+<section>
+<h2>Thank you!</h2>
 </section>
 
 
@@ -771,12 +782,14 @@ executePipeline {
 				history: true,
 				//width: 1400,
     				//height: 700,
+                                slideNumber: true,
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
+                                        { src: 'plugin/zoom-js/zoom.js', async: true },
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 				]
 			});
