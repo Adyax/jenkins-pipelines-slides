@@ -427,14 +427,14 @@ Open/closed principles <small>- open for extension, but closed for modification<
 </section>
 
 <section>
-<h2>Desired workflow</h2>
+<h2>Sample workflow</h2>
 <img data-src="images/flow.png">
 <aside class="notes">
 </aside>
 </section>
 
 <section>
-<h2>Solution Pipeline (not Final!)</h2>
+<h2>Sample Pipeline (not Final!)</h2>
 <pre><code>
 node {
   stage 'config' {
@@ -563,7 +563,7 @@ mkdir -p ../../../reports
 </section>
 
 <section>
-<h2>Solution Pipeline : issues</h2>
+<h2>Sample Pipeline : issues</h2>
 <ul>
 <li class="fragment">
 Lots of almost same code - Not DRY! (Don't repeat yourself)
@@ -572,7 +572,13 @@ Lots of almost same code - Not DRY! (Don't repeat yourself)
 If I need to change some procedure I need to change everywhere
 </li>
 <li class="fragment">
-Logic is complicated
+Logic is complicated, Drupal developers don't know groovy usually
+</li>
+<li class="fragment">
+You can end with many jobs that do almost same things differently
+</li>
+<li class="fragment">
+No common strategy for standard things like emails config, build discarding, etc
 </li>
 </ul>
 <aside class="notes">
@@ -805,6 +811,10 @@ executePipeline {
 <section>
 <h2>Acquia Cloud integration</h2>
 <img data-src="images/ac2.png">
+</section>
+
+<section>
+<h2>Sample pipelines in action</h2>
 </section>
 
 <section>
