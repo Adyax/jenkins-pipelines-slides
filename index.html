@@ -273,7 +273,8 @@ node {
     }
 
     stage('build') {
-        echo "Give me a current directory"
+        echo "Give me a current
+         directory"
         sh('pwd')
     }
 }
@@ -344,13 +345,13 @@ You don't need to commit contrib ("vendor") into Source control
 <section>
 <h2>Composer workflow: Requirements</h2>
 <p class="fragment">
-<u>Requirement</u>: You shouldn't commit "vendor" <small>(Drupal core & contrib packages) to source control with proper Composer workflow</small>
+You shouldn't commit "vendor" <small>(Drupal core & contrib packages) to source control with proper Composer workflow</small>
 </p>
 <p class="fragment">
-<u>Requirement</u>: You shouldn't run "composer update" on PROD <small> as you want same version of code as in Development</small>
+You shouldn't run "composer update" on PROD <br/><small> as you want same version of code as in Development</small>
 </p>
 <p class="fragment">
-<u>Requirement</u>: You should NOT run "composer install" on PROD<br/>
+You should NOT run "composer install" on PROD<br/>
 <small> as it can fail because of timeouts/other issues<br />
 you need to test built code before it hits Production<br />
 It can take a long time to be finished</small>
